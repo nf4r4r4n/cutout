@@ -1,0 +1,9 @@
+Desktop (≥ 1024 px): grid grid-cols-12 gap-4.
+
+Tile	Style	Columns	Min height
+Hero + drop zone	dark	7	560 px
+Before / after comparator	light	5	560 px
+Background color	dark	3	220 px
+Drop shadow	light	3	220 px
+Framing	dark	3	220 px
+Export	orange	3	220 px

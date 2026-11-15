@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #2b2d30;
+  --color-mist: #c9d6df;
+  --color-flame: #ff4b2b;
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-sans: Inter, system-ui, sans-serif;
+  --radius-tile: 28px;
+  --radius-inner: 20px;
+}
+
+.tile {
+  @apply rounded-tile p-5 sm:p-7 flex flex-col;
+}
+.tile-dark {
+  @apply bg-ink text-mist border-2 border-mist;
+}
+.tile-light {
+  @apply bg-mist text-ink;
+}
+.tile-flame {
+  @apply bg-flame text-ink;
+}
+.btn {
+  @apply min-h-[52px] px-7 rounded-full bg-flame text-ink font-bold text-[19px] cursor-pointer;
+}
+.chip {
+  @apply min-h-[44px] px-4 rounded-full border-2 border-current bg-transparent font-semibold text-[15px];
+}
+.chip[aria-pressed="true"] {
+  @apply bg-flame border-flame text-ink font-bold;
+}
+.checker {
+  background-image: repeating-conic-gradient(#2b2d30 0 25%, #c9d6df 0 50%);
+  background-size: 20px 20px;
+}

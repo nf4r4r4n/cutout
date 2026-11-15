@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cutout — Supprime l'arrière-plan de tes images</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap"
+    />
+    <link rel="stylesheet" href="./src/styles.css" />
+  </head>
+  <body class="bg-ink text-mist font-sans min-h-screen">
+    <div class="mx-auto max-w-[1200px] p-3 sm:p-6">
+      <!-- Barre -->
+      <header class="flex items-center justify-between px-2 pb-6">
+        <div class="flex items-center gap-2.5 font-display font-bold text-2xl">
+          <span
+            class="relative inline-block h-7 w-7 rounded-full bg-mist"
+            aria-hidden="true"
+          >
+            <span class="absolute inset-[7px] rounded-full bg-flame"></span>
+          </span>
+          Cutout
+        </div>
+        <span
+          class="rounded-full bg-mist px-4 py-2.5 text-sm font-semibold text-ink"
+          >Gratuit · Sans inscription</span
+        >
+      </header>
+
+      <main class="grid grid-cols-12 gap-4">
+        <!-- Hero + dépôt -->
+        <section class="tile tile-dark col-span-12 lg:col-span-7 min-h-[560px]">
+          <p class="text-[13px] font-semibold uppercase tracking-[.08em]">
+            Suppression d'arrière-plan
+          </p>
+          <h1
+            class="font-display font-bold tracking-tightest leading-[1.02] text-[44px] sm:text-[60px] mt-4 mb-3"
+          >
+            Un fond en moins, en un clic.
+          </h1>
+          <p class="text-lg leading-relaxed max-w-[480px] mb-6">
+            Importe une photo, l'arrière-plan disparaît. Ajuste, compare,
+            télécharge.
+          </p>
+          <label
+            id="dropzone"
+            for="file"
+            class="flex flex-1 flex-col items-center justify-center gap-2.5 text-center p-6 rounded-inner border-2 border-dashed border-mist cursor-pointer"
+          >
+            <svg
+              class="h-11 w-11 stroke-flame"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M12 16V4" />
+              <path d="M7 9l5-5 5 5" />
+              <path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3" />
+            </svg>
+            <b class="font-display text-[22px]">Glisse ton image ici</b>
+            <span class="text-sm"
+              >ou colle-la avec Ctrl + V · PNG, JPG, WEBP</span
+            >
+            <span class="btn mt-1.5 inline-flex items-center"
+              >Choisir un fichier</span
+            >
+            <input
+              id="file"
+              type="file"
+              accept="image/png,image/jpeg,image/webp"
+              class="sr-only"
+            />
+          </label>
+        </section>
+
+        <!-- Comparateur avant / après -->
+        <section
+          class="tile tile-light col-span-12 lg:col-span-5 min-h-[560px] !p-4"
+        >
+          <div
+            id="cmp"
+            class="relative flex-1 overflow-hidden rounded-inner"
+            style="--pos: 50%"
+          >
+            <div id="before" class="absolute inset-0">
+              <!-- image d'origine, object-cover -->
+            </div>
+            <div
+              id="after"
+              class="absolute inset-0 checker"
+              style="clip-path: inset(0 0 0 var(--pos))"
+            >
+              <!-- PNG détouré, object-contain -->
+            </div>
+            <div
+              class="pointer-events-none absolute inset-y-0 w-1 -translate-x-1/2 bg-flame"
+              style="left: var(--pos)"
+            ></div>
+            <div
+              class="pointer-events-none absolute top-1/2 grid h-[52px] w-[52px] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border-[3px] border-ink bg-flame"
+              style="left: var(--pos)"
+            >
+              <svg
+                class="h-[22px] w-[22px] stroke-ink"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke-width="2.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M9 6l-6 6 6 6" />
+                <path d="M15 6l6 6-6 6" />
+              </svg>
+            </div>
+            <span
+              class="absolute left-3.5 top-3.5 rounded-full border-2 border-mist bg-ink px-3.5 py-2 text-[13px] font-semibold text-mist"
+              >Avant</span
+            >
+            <span
+              class="absolute right-3.5 top-3.5 rounded-full border-2 border-mist bg-ink px-3.5 py-2 text-[13px] font-semibold text-mist"
+              >Après</span
+            >
+            <!-- Curseur accessible : range invisible par-dessus -->
+            <input
+              id="slider"
+              type="range"
+              min="0"
+              max="100"
+              value="50"
+              aria-label="Comparer avant et après"
+              class="absolute inset-0 h-full w-full cursor-ew-resize opacity-0"
+            />
+          </div>
+        </section>
+
+        <!-- Couleur de fond -->
+        <section
+          class="tile tile-dark col-span-12 sm:col-span-6 lg:col-span-3 min-h-[220px] gap-3.5"
+        >
+          <h2 class="font-display text-xl font-bold">Couleur de fond</h2>
+          <div class="flex flex-wrap gap-2" id="swatches">
+            <button
+              aria-label="Transparent"
+              class="h-11 w-11 rounded-full border-2 border-mist checker !bg-[length:12px_12px]"
+            ></button>
+            <button
+              aria-label="Clair"
+              class="h-11 w-11 rounded-full border-2 border-mist bg-mist"
+            ></button>
+            <button
+              aria-label="Sombre"
+              class="h-11 w-11 rounded-full border-2 border-mist bg-ink"
+            ></button>
+            <button
+              aria-label="Orange"
+              class="h-11 w-11 rounded-full border-2 border-mist bg-flame"
+            ></button>
+          </div>
+          <p class="text-sm">Ou une image de décor.</p>
+        </section>
+
+        <!-- Ombre portée -->
+        <section
+          class="tile tile-light col-span-12 sm:col-span-6 lg:col-span-3 min-h-[220px] gap-3.5"
+        >
+          <h2 class="font-display text-xl font-bold">Ombre portée</h2>
+          <label for="shadow" class="text-sm">Intensité</label>
+          <input
+            id="shadow"
+            type="range"
+            min="0"
+            max="100"
+            value="40"
+            class="min-h-[44px] w-full accent-flame"
+          />
+          <p class="text-sm">Ancre le sujet sur son nouveau fond.</p>
+        </section>
+
+        <!-- Cadrage -->
+        <section
+          class="tile tile-dark col-span-12 sm:col-span-6 lg:col-span-3 min-h-[220px] gap-3.5"
+        >
+          <h2 class="font-display text-xl font-bold">Cadrage</h2>
+          <div class="flex flex-wrap gap-2">
+            <button class="chip" aria-pressed="true">Auto</button>
+            <button class="chip" aria-pressed="false">1:1</button>
+            <button class="chip" aria-pressed="false">4:5</button>
+            <button class="chip" aria-pressed="false">16:9</button>
+          </div>
+          <p class="text-sm">Recadre autour du sujet.</p>
+        </section>
+
+        <!-- Export -->
+        <section
+          class="tile tile-flame col-span-12 sm:col-span-6 lg:col-span-3 min-h-[220px] justify-between gap-3.5"
+        >
+          <h2 class="font-display text-xl font-bold">Exporter</h2>
+          <div class="flex flex-wrap gap-2">
+            <button
+              class="chip !text-[19px] !font-bold !border-ink"
+              aria-pressed="true"
+            >
+              PNG
+            </button>
+            <button
+              class="chip !text-[19px] !font-bold !border-ink"
+              aria-pressed="false"
+            >
+              JPG
+            </button>
+            <button
+              class="chip !text-[19px] !font-bold !border-ink"
+              aria-pressed="false"
+            >
+              WEBP
+            </button>
+          </div>
+          <button id="download" class="btn !bg-ink !text-mist">
+            Télécharger
+          </button>
+        </section>
+      </main>
+
+      <footer class="py-6 text-center text-sm">
+        Tes images restent sur ton appareil.
+      </footer>
+    </div>
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>
