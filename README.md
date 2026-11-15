@@ -43,10 +43,6 @@ npm run preview
 └── vite.config.ts
 ```
 
-## Art direction
-
-See [DESIGN.md](./DESIGN.md) for the full spec: tokens, bento grid, typography, contrast rules, and forbidden patterns.
-
 ## License
 
 MIT
